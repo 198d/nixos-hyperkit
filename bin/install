@@ -1,0 +1,34 @@
+#! /usr/bin/env bash
+
+usage() {
+  echo "usage: $0 -h -H <host> -m <machine> -d <disk>"
+}
+
+
+args=`getopt hH:m:d: $*`
+if [ ! $? -eq 0 ]; then
+  usage 1>&2 && exit 1
+fi
+set -- $args
+
+
+while true; do
+  case "$1" in
+    -H) HOST=$2 ; shift 2 ;;
+    -m) MACHINE=$2 ; shift 2 ;;
+    -d) DISK=$2 ; shift 2 ;;
+    -h) usage && exit ;; 
+    --) shift; break ;;
+     *) echo "Error: $1" ; exit 1 ;;
+  esac
+done
+
+CONFIG=${MACHINE}/configuration.nix
+
+set -e
+
+bin/install.d/prepare-disk -H ${HOST} -d ${DISK}
+bin/install.d/generate-config -H ${HOST} -c ${CONFIG}
+bin/install.d/nixos-install -H ${HOST}
+bin/install.d/copy-firmware -H ${HOST} -m ${MACHINE}
+

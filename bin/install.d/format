@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+bin/ssh -i ssh/id_rsa root@${1} -- mkfs.ext4 ${2}

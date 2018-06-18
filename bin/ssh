@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+exec $(basename $0) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"

@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | bin/ssh -i ssh/id_rsa root@${1} fdisk ${2}
+ n  # new partition
+ p  # primary partition
+ 1  # partition number
+    # start at beginning of disk 
+    # extend partition to end of disk 
+ a  # make partition bootable
+ w  # write table
+EOF
